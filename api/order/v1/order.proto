@@ -1,0 +1,122 @@
+syntax = "proto3";
+
+package api.order.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "web_rpc/api/order/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.order.v1";
+
+service Order {
+    rpc CreateOrder (CreateOrderRequest) returns (CreateOrderReply) {
+        option (google.api.http) = {
+            post: "/api/v1/order/create",
+            body: "*"
+        };
+    };
+
+    //  amount status file_url
+    rpc UpdateOrder (UpdateOrderRequest) returns (UpdateOrderReply)  {
+        option (google.api.http) = {
+            post: "/api/v1/order/update",
+            body: "*"
+        };
+    };
+
+    rpc GetOrder (GetOrderRequest) returns (GetOrderReply) {
+        option (google.api.http) = {
+            get: "/api/v1/order/get",
+            body: "*"
+        };
+    };
+
+    //  query created_at amount
+    rpc ListOrder (ListOrderRequest) returns (ListOrderReply) {
+        option (google.api.http) = {
+            get: "/api/v1/order/list",
+            body: "*"
+        };
+    };
+    rpc GetListOrder (GetListOrderRequest) returns (GetListOrderReply) {
+        option (google.api.http) = {
+            get: "/api/v1/order/all",
+            body: "*"
+        };
+    };
+
+    //  single file or xlsx
+    //  rpc DownloadFile(DownloadRequest) returns (DownloadReply) {
+    //    option (google.api.http) = {
+    //      get: "/api/v1/order/download",
+    //      body: "*"
+    //    };
+    //  };
+    //
+    //  rpc UploadFile(UploadRequest) returns (UploadReply) {
+    //    option (google.api.http) = {
+    //      post: "/api/v1/order/upload",
+    //      body: "*"
+    //    };
+    //  };
+
+}
+
+message CreateOrderRequest {
+    string user_name = 1;
+    string order_no = 2;
+    double amount = 3;
+    string status = 4;
+    string file_url = 5;
+}
+message CreateOrderReply {}
+
+message UpdateOrderRequest {
+    uint32 id = 1;
+    string user_name = 2;
+    string order_no = 3;
+    double amount = 4;
+    string status = 5;
+    string file_url = 6;
+}
+message UpdateOrderReply {}
+
+message GetOrderRequest {
+    uint32 id = 1;
+}
+message GetOrderReply {
+    OrderModel order = 1;
+}
+
+message ListOrderRequest {
+    string query = 1;
+    string sequence = 2;
+    string by = 3;
+}
+
+message GetListOrderRequest {}
+
+message ListOrderReply {
+    repeated OrderModel orders = 1;
+}
+message  GetListOrderReply {
+    repeated OrderModel orders = 1;
+}
+
+//message DownloadRequest {}
+//message DownloadReply {}
+//
+//message UploadRequest {}
+//message UploadReply {}
+//
+//message DumpRequest {}
+//message DumpReply {}
+
+message OrderModel {
+    uint32 id = 1;
+    string name = 2;
+    string order_no = 3;
+    double amount = 4;
+    string status = 5;
+    string file_url = 6;
+}
